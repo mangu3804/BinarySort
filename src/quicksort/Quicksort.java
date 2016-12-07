@@ -82,6 +82,8 @@ public class Quicksort {
             // which is apparantly the convention for sorting
             for (int i = top; i > bottom-1; i--) {
                 // If the current value is more than the pivot
+                // (the array can be sorted in reverse order by switching the
+                // greater than sign to a lesser than sign)
                 if (array[i] > array[top]) {
                     // Swap the value into the bottom of the partition
                     // and update the postition of the bottom of the partition
@@ -94,6 +96,7 @@ public class Quicksort {
             swap(array, bottomOfPartition, top);
             
             // Recursivley sort the array //
+            // Notice how the pivot is not included in the recursive calls
             
             // Bottom half
             qSort(array, bottom, bottomOfPartition-1);
