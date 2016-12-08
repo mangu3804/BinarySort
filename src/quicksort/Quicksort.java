@@ -14,6 +14,9 @@ import java.util.Random;
  */
 public class Quicksort {
 
+    static long numComparisons;
+    static long numSwaps;
+    
     /**
      * Creates twenty arrays of length 134217727
      * and prints out the time it takes to sort
@@ -22,9 +25,14 @@ public class Quicksort {
      */
     public static void main(String[] args) {
         
+        
+        
         long[] times = new long[20];
         
         for (int j = 0; j < 20; j++) {
+            numComparisons = 0;
+            numSwaps = 0;
+        
             int[] salami = new int[Integer.MAX_VALUE/16];
             Random r = new Random();
         
@@ -37,6 +45,7 @@ public class Quicksort {
             
             times[j] = post-pre;
             System.out.println(times[j]);
+            System.out.println("Comparisons: " + numComparisons + ", Swaps: " + numSwaps);
         }
         
         long average = 0;
@@ -84,15 +93,18 @@ public class Quicksort {
                 // If the current value is more than the pivot
                 // (the array can be sorted in reverse order by switching the
                 // greater than sign to a lesser than sign)
+                numComparisons++;
                 if (array[i] > array[top]) {
                     // Swap the value into the bottom of the partition
                     // and update the postition of the bottom of the partition
                     bottomOfPartition--;
+                    numSwaps++;
                     swap(array, bottomOfPartition, i);
                 }
             }
             
             // Put the pivot into place
+            numSwaps++;
             swap(array, bottomOfPartition, top);
             
             // Recursivley sort the array //
