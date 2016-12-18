@@ -1,65 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package quicksort;
 
 import java.util.Random;
 
 /**
  *
- * @author DaTho7561
+ * @author mangu3804
  */
 public class Quicksort {
 
-    static long numComparisons;
-    static long numSwaps;
-    
     /**
-     * Creates twenty arrays of length 134217727
-     * and prints out the time it takes to sort
-     * them with the Quicksort algorithm.
-     * @param args the command line arguments
+     * 
      */
     public static void main(String[] args) {
+        int[] array = new int[1000];
+        Random r = new Random();
         
-        
-        
-        long[] times = new long[20];
-        
-        for (int j = 0; j < 20; j++) {
-            numComparisons = 0;
-            numSwaps = 0;
-        
-            int[] salami = new int[Integer.MAX_VALUE/16];
-            Random r = new Random();
-        
-            for (int i = 0; i < salami.length; i++) {
-                salami[i] = r.nextInt(Integer.MAX_VALUE);
-            }
-            long pre = System.currentTimeMillis();
-            quicksort(salami);
-            long post = System.currentTimeMillis();
-            
-            times[j] = post-pre;
-            System.out.println(times[j]);
-            System.out.println("Comparisons: " + numComparisons + ", Swaps: " + numSwaps);
+        for (int i = 0; i < array.length; i++) {
+            array[i] = r.nextInt(1000);
         }
-        
-        long average = 0;
-        
-        for (int i = 0; i < times.length; i++) {
-            average+=times[i];
-        }
-        average/=times.length;
-        
-        System.out.println("Average Time: " + average);
-        
+        quicksort(array);
+
+        System.out.println(binarySearch(array, 120));
     }
     
-    // This version of the quicksort function is used to sort entire array
+    /**
+     * This version of the quicksort function is used to sort the entire array
+     * @param array
+     */
     public static void quicksort(int[] array) {
         qSort(array, 0, array.length-1);
     }
@@ -76,9 +43,7 @@ public class Quicksort {
         // partition it and recursively sort it
         if (top-bottom > 0) {
         
-            // The pivot is selected arbitrarily to be the top element in the array
-            // This doesn't show up in the code, because it is assumed that it's
-            // position is "top" and its value is "array[top]"
+            // The pivot is arbitrarily the top element in the array
             
             // Used to figure out where to place the pivot
             // after partitioning is complete, and where to swap elements to
@@ -93,18 +58,15 @@ public class Quicksort {
                 // If the current value is more than the pivot
                 // (the array can be sorted in reverse order by switching the
                 // greater than sign to a lesser than sign)
-                numComparisons++;
                 if (array[i] > array[top]) {
                     // Swap the value into the bottom of the partition
                     // and update the postition of the bottom of the partition
                     bottomOfPartition--;
-                    numSwaps++;
                     swap(array, bottomOfPartition, i);
                 }
             }
             
             // Put the pivot into place
-            numSwaps++;
             swap(array, bottomOfPartition, top);
             
             // Recursivley sort the array //
@@ -135,15 +97,38 @@ public class Quicksort {
     }
     
     /**
-     * Used to print an integer array.
+     * Binary search over the entire array.
      * @param array
+     * @param value 
+     * @return the index
+     */
+    public static int binarySearch(int[] array, int value) {
+        return bSearch(array, value, 0, array.length-1);
+    }
+    
+    /**
+     * Searches items array for goal.
+     * pre: items is sorted from low to high
+     * post : Position of goal has been returned, or -1 has been returned if
+     * goal not found.
+     * @param items
+     * @param goal
+     * @param start
+     * @param end
      * @return 
      */
-    public static String arrayToString(int[] array) {
-        String strRep = "";
-        for (int i = 0; i < array.length; i++) {
-            strRep += array[i] + ", ";
+    public static int bSearch(int[] items, int goal, int start, int end) {
+        if (start > end) {
+            return(-1);
+        } else {
+            int mid = (start + end) / 2;
+            if (goal < items[mid]) {
+                return(mid);
+            } else if (goal < items[mid]) {
+                return(bSearch(items, goal, start, mid-1));
+            } else {
+                return(bSearch(items, goal, mid+1, end));
+            }
         }
-        return strRep;
     }
 }
